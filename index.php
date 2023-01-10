@@ -44,10 +44,19 @@
             'distance_to_center' => 50
         ],
     ];
+    $minVote=$_GET['min_vote'];
+    $parking=$_GET['parking'];
 ?>
 </head>
 
 <body>
+    <form>
+        <label for="vote_filter">Voto minimo</label>
+        <input type="text" name='min_vote' id='vote_filter'>
+        <label for="parking_filter">Ci deve essere il parcheggio</label>
+        <input type="checkbox" name='parking' id='parking_filter'>
+        <input type="submit" value='Filtra'>
+    </form>
     <table class="table">
         <thead class='table-primary'>
             <td>Nome</td>
@@ -58,16 +67,17 @@
         </thead>
         <?php
             foreach ($hotels as $hotel) {
-                echo ('<tr>');
-                    echo ('<td>' .$hotel['name'] . '</td>');
-                    echo ('<td>' .$hotel['description'] . '</td>');
-                    echo ('<td>'); echo($hotel['parking'] ? 'Sì' : 'No'); echo('</td>');
-                    echo ('<td>' .$hotel['vote'] . '</td>');
-                    echo ('<td>' .$hotel['distance_to_center'] . '</td>');
-                echo ('</tr>');
+                if($hotel['vote'] >= $minVote && ($parking!='on' || $hotel['parking'])){
+                    echo ('<tr>');
+                        echo ('<td>' .$hotel['name'] . '</td>');
+                        echo ('<td>' .$hotel['description'] . '</td>');
+                        echo ('<td>'); echo($hotel['parking'] ? 'Sì' : 'No'); echo('</td>');
+                        echo ('<td>' .$hotel['vote'] . '</td>');
+                        echo ('<td>' .$hotel['distance_to_center'] . '</td>');
+                    echo ('</tr>');
+                }
             }
         ?>
     </table>
-
 </body>
 </html>
